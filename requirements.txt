@@ -1,5 +1,4 @@
 aiohttp
 flake8
-pandas
 pydantic
 pytest
