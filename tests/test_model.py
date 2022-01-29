@@ -4,7 +4,7 @@ from scraper import model
 
 
 def test_store_data():
-    result = model.StoreData.parse_file("tests/store_data.json")
+    result = model.StoreDataResponse.parse_file("tests/store_data.json")
 
     assert len(result.stores) == 712
     assert result.stores[0].storeId == "4221"
@@ -18,7 +18,7 @@ def test_store_data():
 
 
 def test_fuel_price_data():
-    result = model.FuelPriceData.parse_file("tests/fuel_price_data.json")
+    result = model.FuelPriceDataResponse.parse_file("tests/fuel_price_data.json")
 
     assert len(result.data) == 5
     assert result.data[0].ean == model.FuelType.U91
