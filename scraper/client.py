@@ -9,10 +9,10 @@ from scraper import model
 
 class Client:
     def __init__(self):
-        self.base_url: str = "https://www.7eleven.com.au/storelocator-retail/mulesoft/"
+        self._base_url: str = "https://www.7eleven.com.au/storelocator-retail/mulesoft/"
 
     async def get_stores(self) -> model.StoreDataResponse:
-        url = parse.urljoin(self.base_url, "stores")
+        url = parse.urljoin(self._base_url, "stores")
 
         async with aiohttp.ClientSession() as session:
             async with session.get(url) as response:
@@ -25,7 +25,7 @@ class Client:
     async def _get_fuel_prices(
         self, store_no: str, session: aiohttp.ClientSession
     ) -> model.FuelPriceDataResponse:
-        url = parse.urljoin(self.base_url, "fuelPrices")
+        url = parse.urljoin(self._base_url, "fuelPrices")
         params = {"storeNo": store_no}
 
         async with session.get(url, params=params) as response:
