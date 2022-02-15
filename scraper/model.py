@@ -1,18 +1,18 @@
 from __future__ import annotations
 
 import datetime
-import enum
 
+import enum
 import pydantic
 
 
 class FuelType(enum.Enum):
     U91 = "52"
-    Diesel = "53"
-    LPG = "54"
     U95 = "55"
     U98 = "56"
     E10 = "57"
+    DIESEL = "53"
+    LPG = "54"
 
 
 class FuelPriceResponse(pydantic.BaseModel):
@@ -80,6 +80,7 @@ class FuelPriceList(pydantic.BaseModel):
         store_price_list: list[tuple[StoreResponse, FuelPriceResponse]],
         timestamp: datetime.datetime,
     ) -> FuelPriceList:
+
         data = [FuelPrice.build(store, price) for store, price in store_price_list]
 
         return FuelPriceList(data=data, last_modified=timestamp.timestamp())
