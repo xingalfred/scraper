@@ -11,7 +11,7 @@ class FuelType(enum.Enum):
     U95 = "55"
     U98 = "56"
     E10 = "57"
-    DIESEL = "53"
+    Diesel = "53"
     LPG = "54"
 
 
