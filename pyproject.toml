@@ -1,0 +1,13 @@
+[project]
+name = "scraper"
+version = "0.1.0"
+dependencies = ["httpx", "pydantic"]
+
+[project.optional-dependencies]
+dev = ["black", "mypy"]
+
+[project.scripts]
+scraper = "scraper.__main__:main"
+
+[tool.black]
+preview = true
