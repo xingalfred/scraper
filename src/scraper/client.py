@@ -1,8 +1,11 @@
+# Standard Library
 import logging
 from urllib import parse
 
+# Third Party
 import httpx
 
+# First Party
 from scraper import api
 
 logger = logging.getLogger(__name__)
@@ -20,7 +23,8 @@ class Client:
 
         response = await self._client.send(request)
         response.raise_for_status()
-        stores = api.StoresResponse.parse_raw(response.text)
+
+        stores = api.StoresResponse.model_validate_json(response.text)
 
         return stores
 
@@ -32,6 +36,7 @@ class Client:
 
         response = await self._client.send(request)
         response.raise_for_status()
-        fuel_prices = api.FuelPricesResponse.parse_raw(response.text)
+
+        fuel_prices = api.FuelPricesResponse.model_validate_json(response.text)
 
         return fuel_prices

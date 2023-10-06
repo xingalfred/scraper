@@ -4,10 +4,17 @@ version = "0.1.0"
 dependencies = ["httpx", "pydantic"]
 
 [project.optional-dependencies]
-dev = ["black", "mypy"]
+dev = ["black", "isort", "mypy"]
 
 [project.scripts]
 scraper = "scraper.__main__:main"
 
 [tool.black]
 preview = true
+
+[tool.isort]
+profile = "black"
+src_paths = ["src", "tests"]
+import_heading_firstparty="First Party"
+import_heading_stdlib="Standard Library"
+import_heading_thirdparty="Third Party"
