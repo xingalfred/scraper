@@ -6,7 +6,8 @@ from scraper import api
 
 
 def test_store_data() -> None:
-    result = api.StoresResponse.parse_file("tests/store_data.json")
+    with open("tests/store_data.json") as f:
+        result = api.StoresResponse.model_validate_json(f.read())
 
     assert len(result.stores) == 712
     assert result.stores[0].storeId == "4221"
@@ -20,7 +21,8 @@ def test_store_data() -> None:
 
 
 def test_fuel_price_data() -> None:
-    result = api.FuelPricesResponse.parse_file("tests/fuel_price_data.json")
+    with open("tests/fuel_price_data.json") as f:
+        result = api.FuelPricesResponse.model_validate_json(f.read())
 
     assert len(result.data) == 5
     assert result.data[0].ean == api.FuelType.U91
