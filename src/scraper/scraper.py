@@ -18,11 +18,10 @@ def get_cheapest_prices(
     lowest_prices: dict[api.FuelType, api.FuelPrice] = {}
     for prices in prices_list:
         for price in prices.data:
-            if price.ean not in lowest_prices:
-                lowest_prices[price.ean] = price
-                continue
-
-            if lowest_prices[price.ean].price >= price.price:
+            if (
+                price.ean not in lowest_prices
+                or lowest_prices[price.ean].price >= price.price
+            ):
                 lowest_prices[price.ean] = price
 
     store_id_to_store: dict[str, api.Store] = {
