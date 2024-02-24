@@ -1,9 +1,8 @@
-# Standard Library
 import asyncio
 import datetime
 import logging
 
-# First Party
+
 from scraper import api
 from scraper.client import Client
 from scraper.decorators import duration

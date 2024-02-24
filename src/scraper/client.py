@@ -1,11 +1,10 @@
-# Standard Library
 import logging
 from urllib import parse
 
-# Third Party
+
 import httpx
 
-# First Party
+
 from scraper import api
 
 logger = logging.getLogger(__name__)

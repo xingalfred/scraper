@@ -1,7 +1,6 @@
-# Standard Library
 import datetime
 
-# First Party
+
 from scraper import api
 
 

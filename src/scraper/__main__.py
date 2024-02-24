@@ -1,11 +1,10 @@
-# Standard Library
 import asyncio
 import json
 import logging
 import pathlib
 import sys
 
-# First Party
+
 from scraper import scraper
 
 root_logger = logging.getLogger()

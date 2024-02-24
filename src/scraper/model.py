@@ -1,4 +1,3 @@
-# Third Party
 import pydantic
 
 
