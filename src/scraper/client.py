@@ -16,20 +16,19 @@ class Client:
         self._base_url: str = "https://www.7eleven.com.au"
         self._client = httpx.AsyncClient(
             timeout=httpx.Timeout(10.0),
-            transport=AsyncRateLimitedTransport.create(rate=5, capacity=10),
+            transport=AsyncRateLimitedTransport.create(rate=50, capacity=100),
         )
         self._decoder = msgspec.json.Decoder()
 
     async def get_stores(self) -> StoresResponse:
         url = parse.urljoin(self._base_url, "/storelocator-retail/mulesoft/stores")
         request = self._client.build_request("GET", url=url)
-        logger.info("Sending %s", request)
 
         response = await self._client.send(
             request,
         )
+        logger.info(response.headers)
         response.raise_for_status()
-
         decoded = msgspec.json.decode(response.text, type=StoresResponse)
 
         return decoded
@@ -38,9 +37,9 @@ class Client:
         url = parse.urljoin(self._base_url, "/storelocator-retail/mulesoft/fuelPrices")
         params = {"storeNo": store_number}
         request = self._client.build_request("GET", url=url, params=params)
-        logger.info("Sending %s", request)
 
         response = await self._client.send(request)
+        logger.info(response.headers)
         response.raise_for_status()
 
         decoded = msgspec.json.decode(response.text, type=FuelPricesResponse)
