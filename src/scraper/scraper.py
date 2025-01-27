@@ -3,18 +3,17 @@ import datetime
 import logging
 
 
-from scraper import api
+from scraper import model
 from scraper.client import Client
-from scraper.decorators import duration
-from scraper.model import FuelPrice, FuelPriceList
+from scraper.output import FuelPrice, FuelPriceList
 
 logger = logging.getLogger(__name__)
 
 
 def get_cheapest_prices(
-    stores: api.StoresResponse, prices_list: list[api.FuelPricesResponse]
-) -> list[tuple[api.Store, api.FuelPrice]]:
-    lowest_prices: dict[api.FuelType, api.FuelPrice] = {}
+    stores: model.StoresResponse, prices_list: list[model.FuelPricesResponse]
+) -> list[tuple[model.Store, model.FuelPrice]]:
+    lowest_prices: dict[model.FuelType, model.FuelPrice] = {}
     for prices in prices_list:
         for price in prices.data:
             if (
@@ -23,12 +22,12 @@ def get_cheapest_prices(
             ):
                 lowest_prices[price.ean] = price
 
-    store_id_to_store: dict[str, api.Store] = {
+    store_id_to_store: dict[str, model.Store] = {
         store.storeId: store for store in stores.stores
     }
 
-    store_price_list: list[tuple[api.Store, api.FuelPrice]] = []
-    for fuel_type in api.FuelType:
+    store_price_list: list[tuple[model.Store, model.FuelPrice]] = []
+    for fuel_type in model.FuelType:
         price = lowest_prices[fuel_type]
         store = store_id_to_store[price.storeNo]
         store_price_list.append((store, price))
@@ -37,7 +36,7 @@ def get_cheapest_prices(
 
 
 def create_fuel_price_list(
-    store_price_list: list[tuple[api.Store, api.FuelPrice]],
+    store_price_list: list[tuple[model.Store, model.FuelPrice]],
     timestamp: datetime.datetime,
 ) -> FuelPriceList:
     output = []
@@ -59,7 +58,6 @@ def create_fuel_price_list(
     return FuelPriceList(data=output, last_modified=int(timestamp.timestamp()))
 
 
-@duration
 async def get_fuel_price_list() -> FuelPriceList:
     client = Client()
 

@@ -1,8 +1,9 @@
 import asyncio
-import json
 import logging
 import pathlib
 import sys
+
+import msgspec
 
 
 from scraper import scraper
@@ -26,11 +27,6 @@ def main() -> None:
     build_dir.mkdir(exist_ok=True)
 
     output_file = build_dir / "fuel_prices.json"
-    with open(output_file, "w") as f:
-        json.dump(
-            fuel_price_list.model_dump(), f, ensure_ascii=False, separators=(",", ":")
-        )
-
-
-if __name__ == "__main__":
-    main()
+    with open(output_file, "wb") as f:
+        encoded_json = msgspec.json.encode(fuel_price_list)
+        f.write(encoded_json)

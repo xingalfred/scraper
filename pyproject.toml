@@ -1,10 +1,21 @@
 [project]
 name = "scraper"
 version = "0.1.0"
-dependencies = ["httpx", "pydantic"]
-
-[project.optional-dependencies]
-dev = ["mypy", "ruff"]
+dependencies = [
+    "httpx>=0.28.1",
+    "httpx-limiter>=0.1.0",
+    "msgspec>=0.19.0",
+]
 
 [project.scripts]
-scraper = "scraper.__main__:main"
+scraper = "scraper.app:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3.4",
+    "ruff>=0.9.3",
+]

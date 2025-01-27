@@ -1,12 +1,14 @@
 import datetime
 
+import msgspec
 
-from scraper import api
+
+from scraper.model import FuelType, StoresResponse, FuelPricesResponse
 
 
 def test_store_data() -> None:
     with open("tests/store_data.json") as f:
-        result = api.StoresResponse.model_validate_json(f.read())
+        result = msgspec.json.decode(f.read(), type=StoresResponse)
 
     assert len(result.stores) == 712
     assert result.stores[0].storeId == "4221"
@@ -21,10 +23,10 @@ def test_store_data() -> None:
 
 def test_fuel_price_data() -> None:
     with open("tests/fuel_price_data.json") as f:
-        result = api.FuelPricesResponse.model_validate_json(f.read())
+        result = msgspec.json.decode(f.read(), type=FuelPricesResponse)
 
     assert len(result.data) == 5
-    assert result.data[0].ean == api.FuelType.U91
+    assert result.data[0].ean == FuelType.U91
     assert result.data[0].price == 1699
     assert result.data[0].priceDate == datetime.datetime.fromisoformat(
         "2021-05-08T05:10:00+10:00"
