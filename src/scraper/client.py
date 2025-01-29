@@ -16,12 +16,13 @@ class Client:
         self._client = httpx.AsyncClient(
             timeout=httpx.Timeout(30.0),
             base_url="https://www.7eleven.com.au",
-            transport=AsyncRateLimitedTransport.create(rate=10, capacity=10),
+            transport=AsyncRateLimitedTransport.create(rate=5, capacity=5),
         )
         self._decoder = msgspec.json.Decoder()
 
     async def get_stores(self) -> StoresResponse:
-        request = self._client.build_request("GET", url="/storelocator-retail/mulesoft/stores")
+        request = self._client.build_request(
+            "GET", url="/storelocator-retail/mulesoft/stores")
 
         response = await self._send_request(request=request)
 
@@ -44,7 +45,7 @@ class Client:
     @stamina.retry(
         on=httpx.HTTPError,
         attempts=10,
-        wait_initial=datetime.timedelta(seconds=10),
+        wait_initial=datetime.timedelta(seconds=5),
         wait_max=datetime.timedelta(seconds=60),
         wait_jitter=datetime.timedelta(seconds=0),
         wait_exp_base=2,
