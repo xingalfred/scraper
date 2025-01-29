@@ -21,8 +21,7 @@ class Client:
         self._decoder = msgspec.json.Decoder()
 
     async def get_stores(self) -> StoresResponse:
-        request = self._client.build_request(
-            "GET", url="/storelocator-retail/mulesoft/stores")
+        request = self._client.build_request("GET", url="/storelocator-retail/mulesoft/stores")
 
         response = await self._send_request(request=request)
 

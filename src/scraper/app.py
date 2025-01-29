@@ -20,10 +20,10 @@ def main() -> None:
 
     fuel_price_list = asyncio.run(scraper.get_fuel_price_list())
 
-    build_dir = pathlib.Path("build")
-    build_dir.mkdir(exist_ok=True)
+    output_dir = pathlib.Path("data")
+    output_dir.mkdir(exist_ok=True)
 
-    output_file = build_dir / "fuel_prices.json"
+    output_file = output_dir / "fuel_prices.json"
     with open(output_file, "wb") as f:
         encoded_json = msgspec.json.encode(fuel_price_list)
         f.write(encoded_json)
