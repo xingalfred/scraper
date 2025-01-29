@@ -2,7 +2,6 @@ import asyncio
 import datetime
 import logging
 
-
 from scraper import model
 from scraper.client import Client
 from scraper.output import FuelPrice, FuelPriceList
@@ -16,15 +15,10 @@ def get_cheapest_prices(
     lowest_prices: dict[model.FuelType, model.FuelPrice] = {}
     for prices in prices_list:
         for price in prices.data:
-            if (
-                price.ean not in lowest_prices
-                or lowest_prices[price.ean].price >= price.price
-            ):
+            if price.ean not in lowest_prices or lowest_prices[price.ean].price >= price.price:
                 lowest_prices[price.ean] = price
 
-    store_id_to_store: dict[str, model.Store] = {
-        store.storeId: store for store in stores.stores
-    }
+    store_id_to_store: dict[str, model.Store] = {store.storeId: store for store in stores.stores}
 
     store_price_list: list[tuple[model.Store, model.FuelPrice]] = []
     for fuel_type in model.FuelType:
@@ -68,7 +62,10 @@ async def get_fuel_price_list() -> FuelPriceList:
             tg.create_task(client.get_fuel_prices(store.storeId))
             for store in stores_response.stores
         ]
-    prices_list = [task.result() for task in tasks]
+
+    prices_list = []
+    for t in tasks:
+        prices_list.append(t.result())
 
     store_price_list = get_cheapest_prices(stores_response, prices_list)
     update_datetime = datetime.datetime.now()

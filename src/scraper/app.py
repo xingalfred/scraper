@@ -5,7 +5,6 @@ import sys
 
 import msgspec
 
-
 from scraper import scraper
 
 root_logger = logging.getLogger()
@@ -15,9 +14,7 @@ root_logger.setLevel(level=logging.INFO)
 def main() -> None:
     handler = logging.StreamHandler(sys.stdout)
     handler.setLevel(logging.DEBUG)
-    formatter = logging.Formatter(
-        "[%(asctime)s] [%(levelname)s] [%(name)s] %(message)s"
-    )
+    formatter = logging.Formatter("[%(asctime)s] [%(levelname)s] [%(name)s] %(message)s")
     handler.setFormatter(formatter)
     root_logger.addHandler(handler)
 
