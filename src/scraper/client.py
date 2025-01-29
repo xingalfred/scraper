@@ -1,3 +1,4 @@
+import datetime
 import logging
 
 import httpx
@@ -41,11 +42,11 @@ class Client:
         return decoded
 
     @stamina.retry(
-        on=httpx.HTTPStatusError,
+        on=httpx.HTTPError,
         attempts=10,
-        wait_initial=10,
-        wait_max=60,
-        wait_jitter=0,
+        wait_initial=datetime.timedelta(seconds=10),
+        wait_max=datetime.timedelta(seconds=60),
+        wait_jitter=datetime.timedelta(seconds=0),
         wait_exp_base=2,
     )
     async def _send_request(self, request: httpx.Request) -> httpx.Response:
