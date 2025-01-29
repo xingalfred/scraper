@@ -40,7 +40,14 @@ class Client:
 
         return decoded
 
-    @stamina.retry(on=httpx.HTTPStatusError, attempts=5, wait_initial=10, wait_max=60)
+    @stamina.retry(
+        on=httpx.HTTPStatusError,
+        attempts=10,
+        wait_initial=10,
+        wait_max=60,
+        wait_jitter=0,
+        wait_exp_base=2,
+    )
     async def _send_request(self, request: httpx.Request) -> httpx.Response:
         response = await self._client.send(request=request)
         logger.info(response)
